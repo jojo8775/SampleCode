@@ -4,6 +4,21 @@ public class Mtree
 {
 	public static void main(String[] args)
 	{
-		System.out.println("This is my first maven project!!!");
+		int[] arr = {1,2,3,4,5,6,7,8,9,10};
+		
+		BinaryTree bTree = new BinaryTree();
+		bTree.createBalancedBinaryTree(arr);
+
+//		bTree.inOrder_rec();
+//		System.out.println();
+//		bTree.inOrder_ite();
+		
+//		bTree.preOrder_rec();
+//		System.out.println();
+//		bTree.preOrder_ite();
+		
+//		bTree.postOrder_rec();
+//		System.out.println();
+//		bTree.postOrder_ite();
 	}
 }
