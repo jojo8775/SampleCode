@@ -20,5 +20,8 @@ public class Mtree
 //		bTree.postOrder_rec();
 //		System.out.println();
 //		bTree.postOrder_ite();
+		
+		bTree.printLevels();
+		bTree.printAllPath();
 	}
 }

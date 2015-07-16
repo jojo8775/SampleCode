@@ -1,5 +1,10 @@
 package com.samplecode.tree;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import com.samplecode.linkedlist.LinkedList;
+import com.samplecode.linkedlist.LinkedListIterator;
 import com.samplecode.queue.Queue;
 import com.samplecode.stack.Stack;
 
@@ -206,6 +211,107 @@ public class BinaryTree
 			}
 
 		} while (!stack.isEmpty());
+	}
+	
+	public void printLevels()
+	{
+		List<LinkedList<TreeNode>> list = getLevels(root);
+		
+		for(LinkedList<TreeNode> l : list)
+		{
+			LinkedListIterator<TreeNode> iterator = l.getIterator();
+			
+			while(iterator.hasNext())
+			{
+				System.out.print(iterator.next().value + ", ");
+			}
+			
+			System.out.println();
+		}
+	}
+	
+	private List<LinkedList<TreeNode>> getLevels(TreeNode root)
+	{
+		if(root == null)
+		{
+			return new ArrayList<LinkedList<TreeNode>>();
+		}
+
+		TreeNode currentNode = root;
+
+		List<LinkedList<TreeNode>> result = new ArrayList<LinkedList<TreeNode>>();
+
+		LinkedList<TreeNode> list = new LinkedList<TreeNode>();
+		list.add(currentNode);
+
+		result.add(list);
+
+		while(!list.isEmpty())
+		{
+			LinkedList<TreeNode> currentList = new LinkedList<TreeNode>();
+
+			LinkedListIterator<TreeNode> iterator = list.getIterator();
+			while(iterator.hasNext())
+			{
+				TreeNode node = iterator.next();
+				if(node.leftChild != null)
+				{
+					currentList.add(node.leftChild);
+				}
+				if(node.rightChild != null)
+				{
+					currentList.add(node.rightChild);
+				}
+			}
+
+			result.add(currentList);
+			list = currentList;
+		}
+		
+		return result;
+	}
+	
+	public void printAllPath()
+	{
+		getAllPath(root);
+	}
+	
+	private void getAllPath(TreeNode root)
+	{
+		TreeNode currentNode  = root;
+
+		Stack<TreeNode> stack = new Stack<TreeNode>();
+		stack.push(currentNode);
+
+		while(!stack.isEmpty())
+		{
+			currentNode = stack.pop();
+			if(currentNode.leftChild != null)
+			{
+				stack.push(currentNode.leftChild);
+			}
+			
+			if(currentNode.rightChild != null)
+			{
+				stack.push(currentNode.rightChild);
+			}
+
+			if(currentNode.rightChild == null && currentNode.leftChild == null)
+			{
+				printPath(currentNode);
+			}
+		}
+	}
+
+	private void printPath(TreeNode node)
+	{
+		while(node != null)
+		{
+			System.out.print(node.value + ", ");
+			node = node.parent;
+		}
+		
+		System.out.println();
 	}
 
 	private static class TreeNode

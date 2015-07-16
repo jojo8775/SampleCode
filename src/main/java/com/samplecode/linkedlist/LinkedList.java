@@ -1,8 +1,7 @@
 package com.samplecode.linkedlist;
 
-public class LinkedList<T>
+public class LinkedList<T> 
 {
-
 	private Node<T> head = new Node<T>();
 	private Node<T> current = head;
 
@@ -34,6 +33,11 @@ public class LinkedList<T>
 //			}
 //		}
 //	}
+	
+	public LinkedListIterator<T> getIterator()
+	{
+		return new LinkedListIterator<T>(head.nextNode);
+	}
 
 	public void clear()
 	{
@@ -41,9 +45,14 @@ public class LinkedList<T>
 		current = head;
 	}
 	
-	private static class Node<T>
+	public boolean isEmpty()
+	{
+		return head.nextNode == null;
+	}
+	
+	public static class Node<T>
 	{
 		public Node<T> nextNode;
 		public T value;
-	}	
+	}
 }
