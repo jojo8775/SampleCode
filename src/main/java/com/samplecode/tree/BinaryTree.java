@@ -12,7 +12,7 @@ public class BinaryTree
 {
 	private TreeNode root;
 
-	public void createBalancedBinaryTree(int[] arr)
+	public void createBalancedBinaryTree_ite(int[] arr)
 	{
 		if (arr.length == 0)
 		{
@@ -312,6 +312,89 @@ public class BinaryTree
 		}
 		
 		System.out.println();
+	}
+	
+	public void maxHeight()
+	{
+		System.out.println(maxHeight(root));
+	}
+	
+	private int maxHeight(TreeNode node)
+	{
+		if(node == null)
+		{
+			return 0;
+		}	
+
+		return 1 + Math.max(maxHeight(node.leftChild), maxHeight(node.rightChild));
+	}
+	
+	public void minHeight()
+	{
+		System.out.println(minHeight(root));
+	}
+	
+	private int minHeight(TreeNode node)
+	{
+		if(node == null)
+		{
+			return 0;
+		}
+
+		return 1 + Math.min(minHeight(node.leftChild), minHeight(node.rightChild));
+	}
+	
+	public void createBalancedBinaryTree_rec(int[] arr)
+	{
+		root = createNode(arr, 0, arr.length - 1);
+	}
+
+
+	private TreeNode createNode(int[] arr, int beg, int end)
+	{
+		if(beg>end)
+		{
+			return null;
+		}
+
+		int middle = (end + beg)/2;
+
+		TreeNode node = new TreeNode();
+		node.value = arr[middle];
+		node.leftChild = createNode(arr, beg, middle - 1);
+		node.rightChild = createNode(arr, middle + 1, end);
+
+		return node;
+	}
+	
+	public void findNode(int val)
+	{
+		TreeNode node = findNode(val, root);
+		
+		System.out.println(node != null);
+	}
+	
+	private TreeNode findNode(int val, TreeNode node)
+	{
+		if(node == null)
+		{
+			return null;
+		}
+
+		System.out.print(node.value + ", ");
+		
+		if(node.value == val)
+		{
+			return node;
+		}
+
+		TreeNode tempNode = findNode(val, node.leftChild);
+		if(tempNode != null)
+		{
+			return tempNode;
+		}
+
+		return findNode(val, node.rightChild);
 	}
 
 	private static class TreeNode

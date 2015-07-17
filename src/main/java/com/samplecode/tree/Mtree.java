@@ -4,10 +4,10 @@ public class Mtree
 {
 	public static void main(String[] args)
 	{
-		int[] arr = {1,2,3,4,5,6,7,8,9,10};
-		
 		BinaryTree bTree = new BinaryTree();
-		bTree.createBalancedBinaryTree(arr);
+
+		int[] arr = {1,2,3,4,5,6,7,8,9,10};
+//		bTree.createBalancedBinaryTree_ite(arr);
 
 //		bTree.inOrder_rec();
 //		System.out.println();
@@ -21,7 +21,18 @@ public class Mtree
 //		System.out.println();
 //		bTree.postOrder_ite();
 		
+//		bTree.printLevels();
+//		bTree.printAllPath();
+		
+//		bTree.maxHeight();
+//		bTree.minHeight();
+
+		bTree.createBalancedBinaryTree_rec(arr);
 		bTree.printLevels();
-		bTree.printAllPath();
+		
+//		for(int i = 0; i< 12; i++)
+//		{
+//			bTree.findNode(i);
+//		}
 	}
 }

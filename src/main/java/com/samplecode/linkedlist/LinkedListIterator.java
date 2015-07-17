@@ -14,13 +14,12 @@ public class LinkedListIterator<T> implements Iterator<T>
 		this.head = node;
 		current = head;
 	}
-	@Override
+
 	public boolean hasNext()
 	{
 		return current != null;
 	}
 
-	@Override
 	public T next()
 	{
 		Node<T> node = current;
