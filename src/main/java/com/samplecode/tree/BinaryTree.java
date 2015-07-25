@@ -1,6 +1,8 @@
 package com.samplecode.tree;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 import com.samplecode.linkedlist.LinkedList;
@@ -43,6 +45,11 @@ public class BinaryTree
 				queue.enQueue(currentNode.rightChild);
 			}
 		}
+	}
+	
+	public TreeNode getRoot()
+	{
+		return root;
 	}
 
 	private TreeNode createNode(TreeNode parentNode, int val)
@@ -212,27 +219,27 @@ public class BinaryTree
 
 		} while (!stack.isEmpty());
 	}
-	
+
 	public void printLevels()
 	{
 		List<LinkedList<TreeNode>> list = getLevels(root);
-		
-		for(LinkedList<TreeNode> l : list)
+
+		for (LinkedList<TreeNode> l : list)
 		{
 			LinkedListIterator<TreeNode> iterator = l.getIterator();
-			
-			while(iterator.hasNext())
+
+			while (iterator.hasNext())
 			{
 				System.out.print(iterator.next().value + ", ");
 			}
-			
+
 			System.out.println();
 		}
 	}
-	
+
 	private List<LinkedList<TreeNode>> getLevels(TreeNode root)
 	{
-		if(root == null)
+		if (root == null)
 		{
 			return new ArrayList<LinkedList<TreeNode>>();
 		}
@@ -246,19 +253,19 @@ public class BinaryTree
 
 		result.add(list);
 
-		while(!list.isEmpty())
+		while (!list.isEmpty())
 		{
 			LinkedList<TreeNode> currentList = new LinkedList<TreeNode>();
 
 			LinkedListIterator<TreeNode> iterator = list.getIterator();
-			while(iterator.hasNext())
+			while (iterator.hasNext())
 			{
 				TreeNode node = iterator.next();
-				if(node.leftChild != null)
+				if (node.leftChild != null)
 				{
 					currentList.add(node.leftChild);
 				}
-				if(node.rightChild != null)
+				if (node.rightChild != null)
 				{
 					currentList.add(node.rightChild);
 				}
@@ -267,36 +274,36 @@ public class BinaryTree
 			result.add(currentList);
 			list = currentList;
 		}
-		
+
 		return result;
 	}
-	
+
 	public void printAllPath()
 	{
 		getAllPath(root);
 	}
-	
+
 	private void getAllPath(TreeNode root)
 	{
-		TreeNode currentNode  = root;
+		TreeNode currentNode = root;
 
 		Stack<TreeNode> stack = new Stack<TreeNode>();
 		stack.push(currentNode);
 
-		while(!stack.isEmpty())
+		while (!stack.isEmpty())
 		{
 			currentNode = stack.pop();
-			if(currentNode.leftChild != null)
+			if (currentNode.leftChild != null)
 			{
 				stack.push(currentNode.leftChild);
 			}
-			
-			if(currentNode.rightChild != null)
+
+			if (currentNode.rightChild != null)
 			{
 				stack.push(currentNode.rightChild);
 			}
 
-			if(currentNode.rightChild == null && currentNode.leftChild == null)
+			if (currentNode.rightChild == null && currentNode.leftChild == null)
 			{
 				printPath(currentNode);
 			}
@@ -305,91 +312,101 @@ public class BinaryTree
 
 	private void printPath(TreeNode node)
 	{
-		while(node != null)
+		while (node != null)
 		{
 			System.out.print(node.value + ", ");
 			node = node.parent;
 		}
-		
+
 		System.out.println();
 	}
-	
+
 	public void maxHeight()
 	{
 		System.out.println(maxHeight(root));
 	}
-	
+
 	private int maxHeight(TreeNode node)
 	{
-		if(node == null)
+		if (node == null)
 		{
 			return 0;
-		}	
+		}
 
 		return 1 + Math.max(maxHeight(node.leftChild), maxHeight(node.rightChild));
 	}
-	
+
 	public void minHeight()
 	{
 		System.out.println(minHeight(root));
 	}
-	
+
 	private int minHeight(TreeNode node)
 	{
-		if(node == null)
+		if (node == null)
 		{
 			return 0;
 		}
 
 		return 1 + Math.min(minHeight(node.leftChild), minHeight(node.rightChild));
 	}
-	
+
 	public void createBalancedBinaryTree_rec(int[] arr)
 	{
 		root = createNode(arr, 0, arr.length - 1);
 	}
 
-
 	private TreeNode createNode(int[] arr, int beg, int end)
 	{
-		if(beg>end)
+		if (beg > end)
 		{
 			return null;
 		}
 
-		int middle = (end + beg)/2;
+		int middle = (end + beg) / 2;
 
 		TreeNode node = new TreeNode();
 		node.value = arr[middle];
 		node.leftChild = createNode(arr, beg, middle - 1);
+		
+		if(node.leftChild != null)
+		{
+			node.leftChild.parent = node;
+		}
+		
 		node.rightChild = createNode(arr, middle + 1, end);
+		
+		if(node.rightChild != null)
+		{
+			node.rightChild.parent = node;
+		}
 
 		return node;
 	}
-	
+
 	public void findNode(int val)
 	{
 		TreeNode node = findNode(val, root);
-		
+
 		System.out.println(node != null);
 	}
-	
+
 	private TreeNode findNode(int val, TreeNode node)
 	{
-		if(node == null)
+		if (node == null)
 		{
 			return null;
 		}
 
 		System.out.print(node.value + ", ");
-		
-		if(node.value == val)
+
+		if (node.value == val)
 		{
 			return node;
 		}
 
 		TreeNode tempNode = findNode(val, node.leftChild);
-		if(tempNode != null)
+		if (tempNode != null)
 		{
 			return tempNode;
 		}
@@ -397,11 +414,235 @@ public class BinaryTree
 		return findNode(val, node.rightChild);
 	}
 
-	private static class TreeNode
+	public void printLeafNodes_ite()
 	{
-		public TreeNode leftChild;
-		public TreeNode rightChild;
-		public TreeNode parent;
-		public int value;
+		List<TreeNode> leafNodes = getLeafNodes(root);
+
+		for (TreeNode singleNode : leafNodes)
+		{
+			System.out.print(singleNode.value + ", ");
+		}
+
+		System.out.println();
+	}
+
+	private List<TreeNode> getLeafNodes(TreeNode root)
+	{
+		if (root == null)
+		{
+			return Collections.emptyList();
+		}
+
+		TreeNode currentNode = root;
+		Stack<TreeNode> stack = new Stack<TreeNode>();
+		stack.push(currentNode);
+
+		List<TreeNode> leafNodes = new ArrayList<TreeNode>();
+
+		while (!stack.isEmpty())
+		{
+			TreeNode node = stack.pop();
+			if (node.leftChild == null && node.rightChild == null)
+			{
+				leafNodes.add(node);
+			}
+			else
+			{
+				if (node.leftChild != null)
+				{
+					stack.push(node.leftChild);
+				}
+				if (node.rightChild != null)
+				{
+					stack.push(node.rightChild);
+				}
+			}
+
+		}
+
+		return leafNodes;
+	}
+
+	public void findCommonAncestor(int val1, int val2)
+	{
+		TreeNode node1 = findNode1(val1, root);
+		TreeNode node2 = findNode1(val2, root);
+		TreeNode commonNode = findCommonAncestor(node1, node2);
+		
+		if (commonNode == null)
+		{
+			System.out.println("null");
+		}
+		else
+		{
+			System.out.println(commonNode.value);
+		}
+	}
+
+	private TreeNode findNode1(int val, TreeNode node)
+	{
+		if (node == null)
+		{
+			return null;
+		}
+//		System.out.print(node.value + ", ");
+		if (node.value == val)
+		{
+			return node;
+		}
+
+		TreeNode tempNode = findNode1(val, node.leftChild);
+		if (tempNode != null)
+		{
+			return tempNode;
+		}
+
+		tempNode = findNode1(val, node.rightChild);
+		
+		return tempNode;
+	}
+
+	private TreeNode findCommonAncestor(TreeNode node1, TreeNode node2)
+	{
+
+		if (node1 == null || node2 == null)
+		{
+			return null;
+		}
+
+		int depthDiff = getDepth(node1) - getDepth(node2);
+		if (depthDiff > 0)
+		{
+			node1 = levelUpNode(node1, depthDiff);
+		}
+		else if (depthDiff < 0)
+		{
+			node2 = levelUpNode(node2, depthDiff * -1);
+		}
+
+		while (node1 != null)
+		{
+			if (node1 == node2)
+			{
+				return node1;
+			}
+
+			node1 = node1.parent;
+			node2 = node2.parent;
+		}
+
+		return null;
+	}
+
+	private int getDepth(TreeNode node)
+	{
+		int depth = -1;
+		while (node != null)
+		{
+			node = node.parent;
+			depth++;
+		}
+
+		return depth;
+	}
+
+	private TreeNode levelUpNode(TreeNode node, int level)
+	{
+		while (level > 0)
+		{
+			node = node.parent;
+			level--;
+		}
+
+		return node;
+	}
+	
+	public void printLeafs_rec()
+	{
+		List<TreeNode> leafNodes = findLeafNodes(new ArrayList<TreeNode>(), root);
+
+		for (TreeNode singleNode : leafNodes)
+		{
+			System.out.print(singleNode.value + ", ");
+		}
+
+		System.out.println();
+	}
+	
+	private <T extends Collection<TreeNode>> T findLeafNodes(T collection, TreeNode node)
+	{
+		if(node == null)
+		{
+			return collection;
+		}
+
+		if(node.leftChild == null && node.rightChild == null)
+		{
+			collection.add(node);
+		}
+
+		findLeafNodes(collection, node.rightChild);
+		
+		return findLeafNodes(collection, node.leftChild);
+	}
+	
+	public boolean isSubTree(TreeNode root1, TreeNode root2)
+	{
+		List<TreeNode> leafNodeSubTree = findLeafNodes(new ArrayList<TreeNode>(), root1);
+		List<TreeNode> leafNodeParentTree = findLeafNodes(new ArrayList<TreeNode>(), root2);
+
+		for(TreeNode singleParentTreeNode : leafNodeParentTree)
+		{
+			for(TreeNode singleSubTreeNode : leafNodeSubTree)
+			{
+				if(singleParentTreeNode.value == singleSubTreeNode.value)
+				{
+					if(isMatch(findRoot(singleParentTreeNode), findRoot(singleSubTreeNode)))
+					{
+						return true;
+					}
+				}
+			}
+		}
+
+		return false;
+	}
+
+	private TreeNode findRoot(TreeNode node)
+	{
+
+		while(node.parent != null)
+		{
+			node = node.parent;
+		}
+
+		return node;
+	}
+	
+	
+	public void isMatch()
+	{
+		System.out.println(isMatch(root, root));
+	}
+	
+	private boolean isMatch(TreeNode node1, TreeNode node2)
+	{
+		if(node1 == null && node2 == null)
+		{
+			return true;
+		}
+
+
+		if(node1 == null)
+		{
+			return false;
+		}
+
+		if(node1.value != node2.value)
+		{
+			return false;
+		}
+
+		return (isMatch(node1.leftChild, node2.leftChild) && isMatch(node1.rightChild, node2.rightChild));
 	}
 }

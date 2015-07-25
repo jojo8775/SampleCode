@@ -50,6 +50,11 @@ public class LinkedList<T>
 		return head.nextNode == null;
 	}
 	
+	public Node<T> getFirstNode()
+	{
+		return head.nextNode;
+	}
+	
 	public static class Node<T>
 	{
 		public Node<T> nextNode;
