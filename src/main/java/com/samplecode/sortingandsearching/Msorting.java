@@ -47,7 +47,9 @@ public class Msorting
 				arr[i] = itemList.get(i);
 			}
 //			print(arr);
-			System.out.println(prob.findElement(arr, 5));
+//			System.out.println(prob.findElement(arr, 5));
+//			System.out.println(prob.findIndex(arr, 5));
+			System.out.println(prob.search(arr, 5));
 		}
 	}
 	

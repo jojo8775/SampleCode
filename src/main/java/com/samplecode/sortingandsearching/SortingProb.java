@@ -37,13 +37,11 @@ public class SortingProb
 				if (arr2[arr2Count] > arr1[arr1Count])
 				{
 					arr1[maxIndex--] = arr2[arr2Count--];
-				}
-				else
+				} else
 				{
 					arr1[maxIndex--] = arr1[arr1Count--];
 				}
-			}
-			else
+			} else
 			{
 				arr1[maxIndex--] = arr1[arr1Count--];
 			}
@@ -131,7 +129,7 @@ public class SortingProb
 
 		if (num > arr[middle])
 		{
-			if (num > arr[end] && arr[end] > arr[middle])
+			if (num < arr[end])
 			{
 				// go left
 				return findElementHelper(beg, middle - 1, arr, num);
@@ -139,10 +137,9 @@ public class SortingProb
 
 			// go right
 			return findElementHelper(middle + 1, end, arr, num);
-		}
-		else
+		} else
 		{
-			if (num < arr[end])
+			if (num < arr[beg])
 			{
 				// go right
 				return findElementHelper(middle + 1, end, arr, num);
@@ -151,5 +148,94 @@ public class SortingProb
 			// go left
 			return findElementHelper(beg, middle - 1, arr, num);
 		}
+	}
+
+	public int findIndex(int[] arr, int key)
+	{
+		return indexFinder(arr, 0, arr.length - 1, key);
+	}
+
+	private int indexFinder(int[] arr, int beg, int end, int key)
+	{
+		if (beg > end)
+		{
+			return -1;
+		}
+
+		int middle = (beg + end) / 2;
+		int middleVal = arr[middle];
+
+		if (middleVal == key)
+		{
+			return middle;
+		}
+
+		if (key > middleVal)
+		{
+			if (key > arr[end])
+			{
+				// look left;
+				return indexFinder(arr, beg, middle - 1, key);
+			}
+			// look right
+			return indexFinder(arr, middle + 1, end, key);
+		} else
+		{
+			if (key < arr[beg])
+			{
+				// look right
+				return indexFinder(arr, middle + 1, end, key);
+			}
+			// look left
+			return indexFinder(arr, beg, middle - 1, key);
+		}
+	}
+
+	public int search(int[] arr, int key)
+	{
+		return searchHelper(arr, 0, arr.length - 1, key);
+	}
+	
+	private int searchHelper(int arr[], int beg, int end, int key)
+	{
+		while (beg <= end)
+		{
+			int middle = (beg + end) / 2;
+
+			if (key == arr[middle])
+			{
+				return middle;
+
+			} 
+			
+			if (arr[beg] <= arr[middle])
+			{
+				if (key > arr[middle])
+				{
+					beg = middle + 1;
+
+				} else if (key >= arr[beg])
+				{
+					end = middle - 1;
+
+				} else
+				{
+					beg = middle + 1;
+				}
+			}
+			else if (key < arr[middle])
+			{
+				end = middle - 1;
+			} else if (key <= arr[end])
+			{
+				beg = middle + 1;
+			} else
+			{
+				end = middle - 1;
+			}
+
+		}
+
+		return -1;
 	}
 }
