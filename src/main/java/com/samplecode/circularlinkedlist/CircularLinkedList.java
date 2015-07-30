@@ -1,5 +1,9 @@
 package com.samplecode.circularlinkedlist;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 public class CircularLinkedList<T>
 {
 	private Node<T> head;
@@ -23,6 +27,14 @@ public class CircularLinkedList<T>
 		runnerNode = node;
 	}
 
+	public void add(List<T> list)
+	{
+		for (T item : list)
+		{
+			add(item);
+		}
+	}
+
 	public void resetRunner()
 	{
 		runnerNode = head.nextNode;
@@ -36,16 +48,16 @@ public class CircularLinkedList<T>
 		runnerNode.nextNode = head;
 		loopCount = 0;
 	}
-	
+
 	public T next()
 	{
-		if(runnerNode == head && runnerNode.nextNode == head)
+		if (runnerNode == head && runnerNode.nextNode == head)
 		{
 			return null;
 		}
 
 		T value = runnerNode.value;
-		if(runnerNode.nextNode == head)
+		if (runnerNode.nextNode == head)
 		{
 			runnerNode = runnerNode.nextNode.nextNode;
 			loopCount++;
@@ -57,10 +69,39 @@ public class CircularLinkedList<T>
 
 		return value;
 	}
-	
+
 	public int getLoopCount()
 	{
 		return loopCount;
+	}
+
+	public List<List<T>> getRoatationState()
+	{
+		List<List<T>> result = new ArrayList<List<T>>();
+
+		if (head == runnerNode)
+		{
+			return result;
+		}
+
+		resetRunner();
+		Node<T> markerNode = runnerNode;
+
+		while (markerNode != head)
+		{
+			List<T> loopList = new ArrayList<T>();
+	
+			do
+			{
+				loopList.add(next());
+			} while (markerNode != runnerNode);
+
+			markerNode = markerNode.nextNode;
+			runnerNode = markerNode;
+			result.add(loopList);
+		}
+
+		return result;
 	}
 
 	public static class Node<T>
