@@ -261,14 +261,14 @@ public class SortingProb
 			{
 				return middle;
 			}
-			
-			if(arr[middle] >= arr[beg])
+
+			if (arr[middle] >= arr[beg])
 			{
-				if(key > arr[middle])
+				if (key > arr[middle])
 				{
 					beg = middle + 1;
 				}
-				else if(key >= arr[beg])
+				else if (key >= arr[beg])
 				{
 					end = middle - 1;
 				}
@@ -277,11 +277,11 @@ public class SortingProb
 					beg = middle + 1;
 				}
 			}
-			else if(key >= arr[beg])
+			else if (key >= arr[beg])
 			{
 				end = middle - 1;
 			}
-			else if(key > arr[middle])
+			else if (key > arr[middle])
 			{
 				beg = middle + 1;
 			}
@@ -290,7 +290,75 @@ public class SortingProb
 				end = middle - 1;
 			}
 		}
-		
+
 		return -1;
 	}
+
+	public int search(String[] strArr, String key)
+	{
+		int beg = 0;
+		int end = strArr.length - 1;
+		int middle = 0;
+		String indexVal = "";
+		int indexAdjustment = 0;
+
+		while (beg <= end)
+		{
+			middle = (beg + end) / 2;
+
+			indexVal = strArr[middle];
+
+			indexAdjustment = 0;
+
+			if (indexVal.equals(""))
+			{
+				for (int i = middle; i <= end; i++)
+				{
+					if (!strArr[i].equals(""))
+					{
+						indexVal = strArr[i];
+						break;
+					}
+
+					indexAdjustment++;
+				}
+
+				if (indexVal == null)
+				{
+					for (int i = middle; i >= end; i--)
+					{
+						if (!strArr[i].equals(""))
+						{
+							indexVal = strArr[i];
+							break;
+						}
+
+						indexAdjustment--;
+					}
+				}
+
+				if (indexVal == null)
+				{
+					return -1;
+				}
+			}
+
+			if (key.equals(indexVal))
+			{
+				return middle + indexAdjustment;
+			}
+
+			if (indexVal.compareTo(key) > 0)
+			{
+				end = middle - 1;
+			}
+			else
+			{
+				beg = middle + 1;
+			}
+		}
+
+		return -1;
+	}
+
 }

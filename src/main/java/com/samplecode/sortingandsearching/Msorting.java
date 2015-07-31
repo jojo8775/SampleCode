@@ -1,5 +1,6 @@
 package com.samplecode.sortingandsearching;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -35,39 +36,56 @@ public class Msorting
 		// int[] arr = {2,3,4,5,1};
 		// System.out.println(prob.findElement(arr, 5));
 
-		CircularLinkedList<Integer> circularLinkedList = new CircularLinkedList<Integer>();
-		circularLinkedList.add(createList(300));
-		List<List<Integer>> result = circularLinkedList.getRoatationState();
-		int searchIndex = 0;
-		
-		for (List<Integer> itemList : result)
-		{
-			int[] arr = new int[itemList.size()];
+		// CircularLinkedList<Integer> circularLinkedList = new
+		// CircularLinkedList<Integer>();
+		// circularLinkedList.add(createList(300));
+		// List<List<Integer>> result = circularLinkedList.getRoatationState();
+		// int searchIndex = 0;
+		//
+		// for (List<Integer> itemList : result)
+		// {
+		// int[] arr = new int[itemList.size()];
+		//
+		// for (int i = 0; i < itemList.size(); i++)
+		// {
+		// arr[i] = itemList.get(i);
+		// }
+		// // print(arr);
+		// // System.out.println(prob.findElement(arr, 5));
+		// // System.out.println(prob.findIndex(arr, 5));
+		// // System.out.println(prob.search(arr, 5));
+		// searchIndex = prob.search_mod(arr, 5);
+		// if(searchIndex == -1)
+		// {
+		// break;
+		// }
+		// System.out.println(searchIndex);
+		// }
+		//
+		// if(searchIndex == -1)
+		// {
+		// System.out.println("failed");
+		// }
+		// else
+		// {
+		// System.out.println("success");
+		// }
 
-			for (int i = 0; i < itemList.size(); i++)
-			{
-				arr[i] = itemList.get(i);
-			}
-			// print(arr);
-			// System.out.println(prob.findElement(arr, 5));
-			// System.out.println(prob.findIndex(arr, 5));
-			// System.out.println(prob.search(arr, 5));
-			searchIndex = prob.search_mod(arr, 5);
-			if(searchIndex == -1)
-			{
-				break;
-			}
-			System.out.println(searchIndex);
-		}
-		
-		if(searchIndex == -1)
+		System.out.println(prob.search(
+				toArray(String.class, Arrays.asList("at", "", "", "", "ball", "", "", "car", "", "", "dad", "", "")),
+				"ball"));
+	}
+
+	private static <T> T[] toArray(Class clazz, List<T> list)
+	{
+		T[] arr = (T[]) Array.newInstance(clazz, list.size());
+
+		for (int i = 0; i < list.size(); i++)
 		{
-			System.out.println("failed");
+			arr[i] = list.get(i);
 		}
-		else
-		{
-			System.out.println("success");
-		}
+
+		return arr;
 	}
 
 	private static List<Integer> createList(int num)
