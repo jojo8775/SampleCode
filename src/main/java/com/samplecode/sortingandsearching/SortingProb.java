@@ -296,59 +296,37 @@ public class SortingProb
 
 	public int search(String[] strArr, String key)
 	{
-		int beg = 0;
-		int end = strArr.length - 1;
+		int beg = 0; 
+		int end = strArr.length - 1; 
 		int middle = 0;
-		String indexVal = "";
-		int indexAdjustment = 0;
 
-		while (beg <= end)
+		while(beg<=end)
 		{
-			middle = (beg + end) / 2;
-
-			indexVal = strArr[middle];
-
-			indexAdjustment = 0;
-
-			if (indexVal.equals(""))
+			while(beg <= end && strArr[end].equals(""))
 			{
-				for (int i = middle; i <= end; i++)
+				end --;
+			}
+			
+			if(beg > end)
+			{
+				return -1;
+			}
+			
+			middle = (beg + end) >> 1;
+			if(strArr[middle].equals(""))
+			{
+				while(strArr[middle].equals(""))
 				{
-					if (!strArr[i].equals(""))
-					{
-						indexVal = strArr[i];
-						break;
-					}
-
-					indexAdjustment++;
-				}
-
-				if (indexVal == null)
-				{
-					for (int i = middle; i >= end; i--)
-					{
-						if (!strArr[i].equals(""))
-						{
-							indexVal = strArr[i];
-							break;
-						}
-
-						indexAdjustment--;
-					}
-				}
-
-				if (indexVal == null)
-				{
-					return -1;
+					middle ++;
 				}
 			}
 
-			if (key.equals(indexVal))
+			if(strArr[middle].equals(key))
 			{
-				return middle + indexAdjustment;
+				return middle;
 			}
 
-			if (indexVal.compareTo(key) > 0)
+			if(strArr[middle].compareTo(key) > 0)
 			{
 				end = middle - 1;
 			}
@@ -359,6 +337,106 @@ public class SortingProb
 		}
 
 		return -1;
+	}
+	
+	public int search_adv(int[] arr, int key)
+	{
+		int beg = 0;
+		int end = arr.length - 1;
+		int middle = 0;
+
+		while(beg <= end)
+		{
+			middle = (beg + end) >> 1;
+
+			if(arr[middle] == key)
+			{
+				return middle;
+			}
+
+			if(key > arr[middle])
+			{
+				beg = middle + 1;
+			}
+			else
+			{
+				end = middle - 1;
+			}
+		}
+
+		return beg - 1;
+	}
+	
+	public String search(int[][] arr, int key)
+	{
+		//search column;
+		int beg = 0;
+		int end = arr.length - 1;
+		int middle = 0;
+		int maxCol = arr[0].length - 1;
+		int maxRow = arr.length - 1;
+		
+		int rowLookUp = 0;
+		int colLookUp = 0;
+
+		int closestRowIndex = 0;
+
+		while(beg <= end)
+		{
+			colLookUp++;
+			middle = (beg + end) >> 1;
+
+			if(arr[middle][maxCol] == key)
+			{
+				System.out.println("Row look up: " + rowLookUp + " Col look up: " + colLookUp);
+				return  middle + ", " + maxCol;
+			}
+
+			if(key > arr[middle][maxCol])
+			{
+				beg = middle + 1;
+			}
+			else
+			{
+				end = middle - 1;
+			}
+		}
+		
+		closestRowIndex = beg;
+		
+		if(closestRowIndex - 1 == maxRow)
+		{
+			System.out.println("Row look up: " + rowLookUp + " Col look up: " + colLookUp);
+			return "not found";
+		}
+
+		beg = 0;
+		end = arr[closestRowIndex].length;
+		
+		//search row
+		while(beg <= end)
+		{
+			rowLookUp++;
+			middle = (beg + end) >> 1;
+
+			if(arr[closestRowIndex][middle] == key) 
+			{
+				System.out.println("Row look up: " + rowLookUp + " Col look up: " + colLookUp);
+				return closestRowIndex + ", " + middle;
+			}
+
+			if(key > arr[closestRowIndex][middle])
+			{
+				beg = middle + 1;
+			}
+			else
+			{
+				end = middle - 1;
+			}
+		}
+
+		System.out.println("Row look up: " + rowLookUp + " Col look up: " + colLookUp);
+		return "not found";
 	}
 
 }

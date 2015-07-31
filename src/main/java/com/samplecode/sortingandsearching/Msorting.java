@@ -71,9 +71,16 @@ public class Msorting
 		// System.out.println("success");
 		// }
 
-		System.out.println(prob.search(
-				toArray(String.class, Arrays.asList("at", "", "", "", "ball", "", "", "car", "", "", "dad", "", "")),
-				"ball"));
+		// System.out.println(prob.search(
+		// toArray(String.class, Arrays.asList("at", "", "", "", "ball", "", "",
+		// "car", "", "", "dad", "", "")),
+		// "ballC"));
+
+//		 int[] arr = { 3, 6, 9, 12};
+//		 System.out.println(prob.search_adv(arr, 13));
+		
+		int[][] grid = createGrid(30000, 4000);
+		System.out.println(prob.search(grid, 743));
 	}
 
 	private static <T> T[] toArray(Class clazz, List<T> list)
@@ -131,5 +138,23 @@ public class Msorting
 		}
 
 		System.out.println();
+	}
+
+	private static int[][] createGrid(int num1, int num2)
+	{
+		int[][] grid = new int[num1][];
+
+		int count = 0;
+
+		for (int i = 0; i < grid.length; i++)
+		{
+			grid[i] = new int[num2];
+			for (int j = 0; j < grid[i].length; j++)
+			{
+				grid[i][j] = ++count;
+			}
+		}
+
+		return grid;
 	}
 }
