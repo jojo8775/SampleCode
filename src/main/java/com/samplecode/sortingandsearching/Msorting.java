@@ -76,9 +76,9 @@ public class Msorting
 		// "car", "", "", "dad", "", "")),
 		// "ballC"));
 
-//		 int[] arr = { 3, 6, 9, 12};
-//		 System.out.println(prob.search_adv(arr, 13));
-		
+		// int[] arr = { 3, 6, 9, 12};
+		// System.out.println(prob.search_adv(arr, 13));
+
 		int[][] grid = createGrid(30000, 4000);
 		System.out.println(prob.search(grid, 743));
 	}
