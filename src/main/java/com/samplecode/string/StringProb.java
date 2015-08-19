@@ -193,4 +193,42 @@ public class StringProb
 
 		return false;
 	}
+	
+	public char[] reverse(char[] charArr)
+	{
+		int startIndex = -1; 
+
+		for(int i=0; i<charArr.length; i++)
+		{
+			if(charArr[i] == ' ')
+			{
+				if(startIndex != -1)
+				{
+					reverse(charArr, startIndex, i);
+					startIndex = -1;
+				}
+			}
+			else
+			{
+				if(startIndex == -1)
+				{
+					startIndex = i;
+				}
+			}
+		}
+		
+		return charArr;
+	}
+
+	private void reverse(char[] charArr, int start, int end)
+	{
+		char tempChar = ' ';
+
+		while(end > start)
+		{
+			tempChar = charArr[start];
+			charArr[start++] = charArr[end];
+			charArr[end--] = tempChar;
+		}
+	}
 }

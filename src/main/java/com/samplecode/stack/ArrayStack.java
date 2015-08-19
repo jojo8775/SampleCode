@@ -1,4 +1,4 @@
-package com.samplecode.string;
+package com.samplecode.stack;
 
 import java.lang.reflect.Array;
 

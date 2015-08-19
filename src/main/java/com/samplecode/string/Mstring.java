@@ -21,6 +21,9 @@ public class Mstring
 		
 //		System.out.println(prob.doesDuplicateExists("FOLWUP"));
 		
+		
+		String str = "this is a problem ";
+		System.out.println(prob.reverse(str.toCharArray()));
 	}
 
 	private static void printMatrix(int[][] arr)
