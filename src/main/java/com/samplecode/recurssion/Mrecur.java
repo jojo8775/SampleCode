@@ -32,7 +32,7 @@ public class Mrecur
 		// System.out.println(recurssion.findNumberOfWays_rec(4, coinType));
 		// System.out.println(recurssion.findNumberOfWays_dp(4, coinType));
 		
-		recurssion.findAllNqueen(4);
+		recurssion.findAllNqueen(14);
 	}
 
 	private static int[][] createBoard(int num)

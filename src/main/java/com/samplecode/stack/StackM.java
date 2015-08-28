@@ -1,6 +1,5 @@
 package com.samplecode.stack;
 
-import com.samplecode.string.ArrayStack;
 
 public class StackM
 {
