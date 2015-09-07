@@ -173,12 +173,12 @@ public class ProblemSet1
 		return stringBuilder.toString();
 	}
 
-	public static class ProductionOrder
+	public static class Node
 	{
 		private int id;
 		private int parentId;
 
-		public ProductionOrder(int parentId, int id)
+		public Node(int parentId, int id)
 		{
 			this.id = id;
 			this.parentId = parentId;
@@ -213,7 +213,7 @@ public class ProblemSet1
 				return false;
 			if (getClass() != obj.getClass())
 				return false;
-			ProductionOrder other = (ProductionOrder) obj;
+			Node other = (Node) obj;
 			if (id != other.id)
 				return false;
 			if (parentId != other.parentId)
@@ -222,97 +222,97 @@ public class ProblemSet1
 		}
 	}
 
-	public Collection<ProductionOrder> getLeafProductionOrders(List<ProductionOrder> productionOrders)
+	public Collection<Node> getLeafNodes(List<Node> nodes)
 	{
-		rejectIfInvalid(productionOrders);
+		rejectIfInvalid(nodes);
 		
-		if(productionOrders.size() == 1 || productionOrders.isEmpty())
+		if(nodes.size() == 1 || nodes.isEmpty())
 		{
-			return productionOrders;
+			return nodes;
 		}
 
-		Map<Integer, Stack<ProductionOrder>> orderAndImmidiateChildMap = new HashMap<Integer, Stack<ProductionOrder>>();
+		Map<Integer, Stack<Node>> parentAndImmidiateChildMap = new HashMap<Integer, Stack<Node>>();
 
-		for (ProductionOrder singleOrder : productionOrders)
+		for (Node singleOrder : nodes)
 		{
 			if (singleOrder.getParentId() > 0)
 			{
-				if (orderAndImmidiateChildMap.get(singleOrder.getParentId()) == null)
+				if (parentAndImmidiateChildMap.get(singleOrder.getParentId()) == null)
 				{
-					orderAndImmidiateChildMap.put(singleOrder.getParentId(), new Stack<ProductionOrder>());
+					parentAndImmidiateChildMap.put(singleOrder.getParentId(), new Stack<Node>());
 				}
 
-				orderAndImmidiateChildMap.get(singleOrder.getParentId()).push(singleOrder);
+				parentAndImmidiateChildMap.get(singleOrder.getParentId()).push(singleOrder);
 			}
 		}
 
-		Set<ProductionOrder> leafOrders = new HashSet<ProductionOrder>();
+		Set<Node> leafNodes = new HashSet<Node>();
 
-		for (ProductionOrder singleOrder : productionOrders)
+		for (Node singleOrder : nodes)
 		{
-			if (orderAndImmidiateChildMap.get(singleOrder.getId()) == null)
+			if (parentAndImmidiateChildMap.get(singleOrder.getId()) == null)
 			{
-				leafOrders.add(singleOrder);
+				leafNodes.add(singleOrder);
 			}
 			else
 			{
-				Stack<ProductionOrder> childOrders = orderAndImmidiateChildMap.get(singleOrder.getId());
+				Stack<Node> childNodes = parentAndImmidiateChildMap.get(singleOrder.getId());
 
-				while (!childOrders.isEmpty())
+				while (!childNodes.isEmpty())
 				{
-					ProductionOrder childOrder = childOrders.pop();
-					if (orderAndImmidiateChildMap.get(childOrder.getId()) == null)
+					Node childNode = childNodes.pop();
+					if (parentAndImmidiateChildMap.get(childNode.getId()) == null)
 					{
-						leafOrders.add(childOrder);
+						leafNodes.add(childNode);
 					}
 					else
 					{
-						Stack<ProductionOrder> tempStack = orderAndImmidiateChildMap.get(childOrder.getId());
+						Stack<Node> tempStack = parentAndImmidiateChildMap.get(childNode.getId());
 						while (!tempStack.isEmpty())
 						{
-							childOrders.push(tempStack.pop());
+							childNodes.push(tempStack.pop());
 						}
 					}
 				}
 			}
 		}
 
-		return leafOrders;
+		return leafNodes;
 	}
 
-	private void rejectIfInvalid(List<ProductionOrder> orders)
+	private void rejectIfInvalid(List<Node> nodes)
 	{
-		if (orders == null)
+		if (nodes == null)
 		{
 			throw new IllegalArgumentException("Given input is null");
 		}
 
-		Map<Integer, ProductionOrder> orderHashTable = new HashMap<Integer, ProductionOrder>(orders.size());
+		Map<Integer, Node> nodeHashTable = new HashMap<Integer, Node>(nodes.size());
 
-		for (ProductionOrder singleOrder : orders)
+		for (Node singleNode : nodes)
 		{
-			if (singleOrder == null)
+			if (singleNode == null)
 			{
 				throw new IllegalArgumentException("Given input has null entry");
 			}
 
-			orderHashTable.put(singleOrder.getId(), singleOrder);
+			nodeHashTable.put(singleNode.getId(), singleNode);
 		}
 
 		Set<Integer> tempSet = new HashSet<Integer>();
 		int tempId = 0;
 
-		for (ProductionOrder singleOrder : orders)
+		for (Node singleNode : nodes)
 		{
-			tempId = singleOrder.getParentId();
-			while (orderHashTable.get(tempId) != null)
+			tempId = singleNode.getParentId();
+			while (nodeHashTable.get(tempId) != null)
 			{
-				if (!tempSet.add(orderHashTable.get(tempId).getId()))
+				if (!tempSet.add(nodeHashTable.get(tempId).getId()))
 				{
-					throw new IllegalArgumentException(singleOrder.getId() + " has circular dependency");
+					throw new IllegalArgumentException(singleNode.getId() + " has circular dependency");
 				}
 
-				tempId = orderHashTable.get(tempId).getParentId();
+				tempId = nodeHashTable.get(tempId).getParentId();
 			}
 
 			tempSet.clear();
