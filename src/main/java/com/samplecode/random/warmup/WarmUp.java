@@ -366,6 +366,71 @@ public class WarmUp
 		}
 	}
 
+	public <T> void printNodesAtEachLevel(TreeNode<T> node)
+	{
+		if (node == null)
+		{
+			return;
+		}
+
+		List<TreeNode<T>> list1 = new ArrayList<TreeNode<T>>();
+		list1.add(node);
+
+		while (!list1.isEmpty())
+		{
+			List<TreeNode<T>> list2 = new ArrayList<TreeNode<T>>();
+			for (TreeNode<T> singleNode : list1)
+			{
+				System.out.print(singleNode.value + ", ");
+				if (singleNode.leftChild != null)
+				{
+					list2.add(singleNode.leftChild);
+				}
+				if (singleNode.rightChild != null)
+				{
+					list2.add(singleNode.rightChild);
+				}
+			}
+
+			list1 = list2;
+			System.out.println();
+		}
+	}
+
+	public <T> boolean findNode(TreeNode<T> root, TreeNode<T> node1, TreeNode<T> node2)
+	{
+		if (root == null || node1 == null || node2 == null)
+		{
+			return false;
+		}
+
+		return findNodes(root, node1, node2, 0) == 2;
+	}
+
+	private <T> int findNodes(TreeNode<T> root, TreeNode<T> node1, TreeNode<T> node2, int count)
+	{
+		if (root == null)
+		{
+			return 0;
+		}
+
+		int nodesFound = count;
+
+		if (root.value.equals(node1.value) || root.value.equals(node2.value))
+		{
+			nodesFound++;
+		}
+
+		if (nodesFound == 2)
+		{
+			return nodesFound;
+		}
+
+		nodesFound = findNodes(root.leftChild, node1, node2, nodesFound);
+
+		return findNodes(root.rightChild, node1, node2, nodesFound);
+	}
+
 	public <T> int findDepth(TreeNode<T> node)
 	{
 		if (node == null)
@@ -400,10 +465,328 @@ public class WarmUp
 		return depth;
 	}
 
+	public <T> int findDepth_rec(TreeNode<T> node)
+	{
+		if (node == null)
+		{
+			return 0;
+		}
+
+		return 1 + Math.max(findDepth_rec(node.leftChild), findDepth_rec(node.rightChild));
+	}
+
+	public <T> int getDiameter(TreeNode<T> root)
+	{
+		if (root == null)
+		{
+			return 0;
+		}
+		return getDepth(root.leftChild) + getDepth(root.rightChild) + 1;
+	}
+
+	private <T> int getDepth(TreeNode<T> node)
+	{
+		if (node == null)
+		{
+			return 0;
+		}
+		return 1 + Math.max(getDepth(node.leftChild), getDepth(node.rightChild));
+	}
+
+	public int[] reArrangeArray(int[] arr)
+	{
+		if (arr.length == 0 || arr.length <= 2)
+		{
+			return arr;
+		}
+
+		int[] result = new int[arr.length];
+
+		int evenIndex = 1;
+		int oddIndex = 0;
+		int emptySlotFromEnd = arr.length - 1;
+
+		for (int i = 0; i < arr.length; i++)
+		{
+			if (arr[i] % 2 == 0)
+			{
+				if (evenIndex < arr.length)
+				{
+					result[evenIndex] = arr[i];
+					evenIndex += 2;
+				}
+				else
+				{
+					result[emptySlotFromEnd--] = arr[i];
+				}
+			}
+			else
+			{
+				if (oddIndex < arr.length)
+				{
+					result[oddIndex] = arr[i];
+					oddIndex += 2;
+				}
+				else
+				{
+					result[emptySlotFromEnd--] = arr[i];
+				}
+			}
+		}
+
+		return result;
+	}
+
+	public TreeNode<Integer> modifyTree(TreeNode<Integer> node)
+	{
+		if (node == null)
+		{
+			return node;
+		}
+
+		Stack<TreeNode<Integer>> stack = new Stack<TreeNode<Integer>>();
+		stack.push(node);
+
+		while (!stack.isEmpty())
+		{
+			TreeNode<Integer> tempNode = stack.pop();
+			Integer value = 0;
+
+			if (tempNode.leftChild != null)
+			{
+				stack.push(tempNode.leftChild);
+				value = tempNode.leftChild.value;
+			}
+
+			if (tempNode.rightChild != null)
+			{
+				stack.push(tempNode.rightChild);
+				value = value + tempNode.rightChild.value;
+			}
+
+			tempNode.value = value;
+		}
+
+		return node;
+	}
+
+	public void findShortestPath(char[][] arr, Point start, Point end)
+	{
+		Queue<Point> queue = new Queue<Point>();
+		queue.enQueue(start);
+		arr[start.x][start.y] = '1';
+
+		int tempVal = 0;
+		boolean endReachable = false;
+
+		while (!queue.isEmpty())
+		{
+			Point tempPoint = queue.deQueue();
+			if (tempPoint.x == end.x && tempPoint.y == end.y)
+			{
+				endReachable = true;
+				break;
+			}
+
+			tempVal = arr[tempPoint.x][tempPoint.y];
+
+			// move down
+			if (tempPoint.x + 1 < arr.length)
+			{
+				if (arr[tempPoint.x + 1][tempPoint.y] != '*' && arr[tempPoint.x + 1][tempPoint.y] == ' ')
+				{
+					queue.enQueue(new Point(tempPoint.x + 1, tempPoint.y));
+					arr[tempPoint.x + 1][tempPoint.y] = (char) (tempVal + 1);
+				}
+			}
+
+			// move up
+			if (tempPoint.x - 1 >= 0)
+			{
+				if (arr[tempPoint.x - 1][tempPoint.y] != '*' && arr[tempPoint.x - 1][tempPoint.y] == ' ')
+				{
+					queue.enQueue(new Point(tempPoint.x - 1, tempPoint.y));
+					arr[tempPoint.x - 1][tempPoint.y] = (char) (tempVal + 1);
+				}
+			}
+
+			// move left
+			if (tempPoint.y - 1 >= 0)
+			{
+				if (arr[tempPoint.x][tempPoint.y - 1] != '*' && arr[tempPoint.x][tempPoint.y - 1] == ' ')
+				{
+					queue.enQueue(new Point(tempPoint.x, tempPoint.y - 1));
+					arr[tempPoint.x][tempPoint.y - 1] = (char) (tempVal + 1);
+				}
+			}
+
+			// move right
+			if (tempPoint.y + 1 < arr[0].length)
+			{
+				if (arr[tempPoint.x][tempPoint.y + 1] != '*' && arr[tempPoint.x][tempPoint.y + 1] == ' ')
+				{
+					queue.enQueue(new Point(tempPoint.x, tempPoint.y + 1));
+					arr[tempPoint.x][tempPoint.y + 1] = (char) (tempVal + 1);
+				}
+			}
+		}
+
+		print(arr);
+
+		if (!endReachable)
+		{
+			System.out.println("Not reachabe");
+		}
+	}
+
+	private void print(char[][] arr)
+	{
+		for (char[] c1 : arr)
+		{
+			for (char c : c1)
+			{
+				System.out.print(c + ", ");
+			}
+
+			System.out.println();
+		}
+	}
+
+	public boolean isEdit(String str1, String str2)
+	{
+		if (str1 == null || str2 == null || str1.equals(str2) || Math.abs(str1.length() - str2.length()) > 1
+				|| (str1.isEmpty() && str2.isEmpty()))
+		{
+			return false;
+		}
+
+		int misMatchCount = 0;
+		int count1 = 0;
+		int count2 = 0;
+
+		String longerString = ((str1.length() - str2.length()) >= 0) ? str1 : str2;
+		String shorterString = (str1.equals(longerString)) ? str2 : str1;
+
+		// match first element
+		if (longerString.charAt(0) == shorterString.charAt(0))
+		{
+			while (count1 < longerString.length())
+			{
+				if (count2 >= shorterString.length() || longerString.charAt(count1) != shorterString.charAt(count2))
+				{
+					misMatchCount++;
+				}
+
+				if (misMatchCount > 1)
+				{
+					return false;
+				}
+
+				count1++;
+				count2++;
+			}
+		}
+		else
+		{
+			count2 = shorterString.length() - 1;
+			count1 = longerString.length() - 1;
+			while (count1 >= 0)
+			{
+				if (count2 < 0 || longerString.charAt(count1) != shorterString.charAt(count2))
+				{
+					misMatchCount++;
+				}
+
+				if (misMatchCount > 1)
+				{
+					return false;
+				}
+
+				count1--;
+				count2--;
+			}
+		}
+
+		return true;
+	}
+
+	public <T> Node<T> editList(Node<T> list, int num)
+	{
+		if (num < 1 || list == null)
+		{
+			throw new IllegalArgumentException("Invalid parameters");
+		}
+
+		Node<T> currentNode = list;
+		Node<T> prevNode = null;
+
+		while (currentNode != null && num > 0)
+		{
+			num--;
+			prevNode = currentNode;
+			currentNode = currentNode.next;
+		}
+
+		Node<T> node1 = prevNode;
+		Node<T> node2 = currentNode;
+		Node<T> tempNode = null;
+
+		while (currentNode != null)
+		{
+			// reached last node
+			if (currentNode.next == null && !node1.equals(prevNode))
+			{
+				node1.next = prevNode;
+				node2.next = currentNode;
+				break;
+			}
+
+			tempNode = currentNode;
+			currentNode = currentNode.next;
+			tempNode.next = prevNode;
+			prevNode = currentNode;
+		}
+
+		return list;
+	}
+
+	public static class Node<T>
+	{
+		public T val;
+		public Node<T> next;
+
+		public Node(T val)
+		{
+			this.val = val;
+		}
+	}
+
+	public static class Point
+	{
+		public int x;
+		public int y;
+
+		public Point(int x, int y)
+		{
+			this.x = x;
+			this.y = y;
+		}
+	}
+
 	public static class TreeNode<T>
 	{
 		public T value;
 		public TreeNode<T> leftChild;
 		public TreeNode<T> rightChild;
+
+		public TreeNode()
+		{
+
+		}
+
+		public TreeNode(T value)
+		{
+			this.value = value;
+		}
 	}
 }
