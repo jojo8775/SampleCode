@@ -47,4 +47,24 @@ public class RandomProb
 			}
 		}
 	}
+	
+	public int reverseNumber(int num)
+	{
+		boolean isNegative = (num < 0);
+		
+		if(isNegative)
+		{
+			num = num * -1;
+		}
+		
+		int result = 0;
+		while(num > 0)
+		{
+			result = result << 1;
+			result = result | (num & 1);
+			num = num >> 1;
+		}
+		
+		return isNegative ? result * -1 : result;
+	}
 }
