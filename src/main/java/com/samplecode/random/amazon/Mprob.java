@@ -27,19 +27,19 @@ public class Mprob
 		
 //		System.out.println(probSet1.formatString("sssssTTTTTToNNps"));
 		
-		List<ProblemSet1.ProductionOrder> rr = new ArrayList<ProblemSet1.ProductionOrder>();
-		rr.add(new ProblemSet1.ProductionOrder(0, 1));
-		rr.add(new ProblemSet1.ProductionOrder(4, 2));
-		rr.add(new ProblemSet1.ProductionOrder(1, 3));
-		rr.add(new ProblemSet1.ProductionOrder(0, 4));
-		rr.add(new ProblemSet1.ProductionOrder(3, 5));
-		rr.add(new ProblemSet1.ProductionOrder(1, 6));
-		rr.add(new ProblemSet1.ProductionOrder(0, 7));
+		List<ProblemSet1.Node> rr = new ArrayList<ProblemSet1.Node>();
+		rr.add(new ProblemSet1.Node(0, 1));
+		rr.add(new ProblemSet1.Node(4, 2));
+		rr.add(new ProblemSet1.Node(1, 3));
+		rr.add(new ProblemSet1.Node(0, 4));
+		rr.add(new ProblemSet1.Node(3, 5));
+		rr.add(new ProblemSet1.Node(1, 6));
+		rr.add(new ProblemSet1.Node(0, 7));
 		
 		
-		Collection<ProblemSet1.ProductionOrder> result = probSet1.getLeafProductionOrders(rr);
+		Collection<ProblemSet1.Node> result = probSet1.getLeafNodes(rr);
 		
-		for(ProblemSet1.ProductionOrder p : result)
+		for(ProblemSet1.Node p : result)
 		{
 			System.out.println(p.getId());
 		}
