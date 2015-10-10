@@ -114,15 +114,19 @@ public class Driver
 		// result = result.next;
 		// }
 
-		int[] arr = { 1, 2, 3, 4, 5, 6, 7, 8, 9,10};
-		TreeNode<Integer> root = warmUp.createBalancedBinaryTree(arr);
-		warmUp.printNodesAtEachLevel(root);
-		warmUp.printNodesAtEachLevel(root);
-		List<String> paths = warmUp.findPathsToLeaf(root);
-		for (String p : paths)
-		{
-			System.out.println(p);
-		}
+		// int[] arr = { 1, 2, 3, 4, 5, 6, 7, 8, 9,10};
+		// TreeNode<Integer> root = warmUp.createBalancedBinaryTree(arr);
+		// warmUp.printNodesAtEachLevel(root);
+		// warmUp.printNodesAtEachLevel(root);
+		// List<String> paths = warmUp.findPathsToLeaf(root);
+		// for (String p : paths)
+		// {
+		// System.out.println(p);
+		// }
+		
+		int[] arr = {2,4,6,6,4,8};
+		
+		System.out.println(warmUp.findMaxRectriangleArea(arr));
 	}
 
 	private static void print(int[] arr)

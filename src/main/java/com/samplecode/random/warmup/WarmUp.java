@@ -103,8 +103,7 @@ public class WarmUp
 			if (rightIndex < rightArr.length && leftArr[leftIndex] > rightArr[rightIndex])
 			{
 				arr[index++] = rightArr[rightIndex++];
-			}
-			else
+			} else
 			{
 				arr[index++] = leftArr[leftIndex++];
 			}
@@ -219,8 +218,7 @@ public class WarmUp
 					int temp = arr[j];
 					arr[j] = arr[j - 1];
 					arr[j - 1] = temp;
-				}
-				else
+				} else
 				{
 					break;
 				}
@@ -516,20 +514,17 @@ public class WarmUp
 				{
 					result[evenIndex] = arr[i];
 					evenIndex += 2;
-				}
-				else
+				} else
 				{
 					result[emptySlotFromEnd--] = arr[i];
 				}
-			}
-			else
+			} else
 			{
 				if (oddIndex < arr.length)
 				{
 					result[oddIndex] = arr[i];
 					oddIndex += 2;
-				}
-				else
+				} else
 				{
 					result[emptySlotFromEnd--] = arr[i];
 				}
@@ -687,8 +682,7 @@ public class WarmUp
 				count1++;
 				count2++;
 			}
-		}
-		else
+		} else
 		{
 			count2 = shorterString.length() - 1;
 			count1 = longerString.length() - 1;
@@ -790,8 +784,7 @@ public class WarmUp
 					negativeIndex = positiveIndex;
 				}
 				positivePos = false;
-			}
-			else
+			} else
 			{
 				if (arr[i] > 0 || i != negativeIndex)
 				{
@@ -826,8 +819,7 @@ public class WarmUp
 			if (arr[i] < 0)
 			{
 				negativeQueue.enQueue(arr[i]);
-			}
-			else
+			} else
 			{
 				positiveQueue.enQueue(arr[i]);
 			}
@@ -842,8 +834,7 @@ public class WarmUp
 			{
 				positivePos = true;
 				arr[count++] = negativeQueue.deQueue();
-			}
-			else
+			} else
 			{
 				positivePos = false;
 				arr[count++] = positiveQueue.deQueue();
@@ -940,8 +931,7 @@ public class WarmUp
 			{
 				beg = middle + 1;
 				lowMatch = arr[middle];
-			}
-			else
+			} else
 			{
 				end = middle;
 				highMatch = arr[middle];
@@ -1031,8 +1021,7 @@ public class WarmUp
 		{
 			prevNode = list1;
 			list1 = list1.next;
-		}
-		else
+		} else
 		{
 			prevNode = list2;
 			list2 = list2.next;
@@ -1058,8 +1047,7 @@ public class WarmUp
 			{
 				prevNode.next = list1;
 				list1 = list1.next;
-			}
-			else
+			} else
 			{
 				prevNode.next = list2;
 				list2 = list2.next;
@@ -1091,8 +1079,7 @@ public class WarmUp
 		if (index > (arr.size() - 1))
 		{
 			arr.add(index, node.value);
-		}
-		else
+		} else
 		{
 			arr.set(index, node.value);
 		}
@@ -1107,6 +1094,25 @@ public class WarmUp
 		findPathHelper(arr, index + 1, node.rightChild, strArray);
 
 		return strArray;
+	}
+
+	public int findMaxRectriangleArea(int[] arr)
+	{
+		Stack<Integer> stack = new Stack<Integer>();
+		int maxArea = 0;
+
+		for (int i = 0; i <= arr.length; i++)
+		{
+			while (!stack.isEmpty() && (i == arr.length || arr[stack.peek()] > arr[i]))
+			{
+				int buildingIndex = stack.pop();
+				int numberOfBuildingsToConsider = (i == arr.length) ? i - buildingIndex - 1 : i - buildingIndex;
+				maxArea = Math.max((arr[buildingIndex] * numberOfBuildingsToConsider), maxArea);
+			}
+			stack.push(i);
+		}
+
+		return maxArea;
 	}
 
 	private String convertToString(List<Integer> arr, int index)
