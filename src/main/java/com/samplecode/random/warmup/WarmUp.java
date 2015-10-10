@@ -1,7 +1,9 @@
 package com.samplecode.random.warmup;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import com.samplecode.queue.Queue;
 import com.samplecode.stack.Stack;
@@ -734,20 +736,402 @@ public class WarmUp
 		while (currentNode != null)
 		{
 			// reached last node
-			if (currentNode.next == null && !node1.equals(prevNode))
+			if (currentNode.next == null)
 			{
-				node1.next = prevNode;
-				node2.next = currentNode;
+				if (!node1.equals(prevNode))
+				{
+					node1.next = prevNode;
+					node2.next = currentNode;
+				}
 				break;
 			}
 
 			tempNode = currentNode;
 			currentNode = currentNode.next;
 			tempNode.next = prevNode;
-			prevNode = currentNode;
+			prevNode = tempNode;
 		}
 
 		return list;
+	}
+
+	public int[] arrangeArr(int[] arr)
+	{
+		int positiveIndex = 0;
+		int negativeIndex = 0;
+		boolean positivePos = true;
+
+		for (int i = 0; i < arr.length; i++)
+		{
+			// marking next index with positive value
+			while (positiveIndex < arr.length && arr[positiveIndex] < 0)
+			{
+				positiveIndex++;
+			}
+
+			// marking next index with negative value
+			while (negativeIndex < arr.length && arr[negativeIndex] > 0)
+			{
+				negativeIndex++;
+			}
+
+			// if positive value or negative value runs out no need to arrange
+			// entries anymore
+			if (positiveIndex == arr.length || negativeIndex == arr.length)
+			{
+				break;
+			}
+
+			if (positivePos)
+			{
+				if (arr[i] < 0 || i != positiveIndex)
+				{
+					swap(arr, i, positiveIndex);
+					negativeIndex = positiveIndex;
+				}
+				positivePos = false;
+			}
+			else
+			{
+				if (arr[i] > 0 || i != negativeIndex)
+				{
+					swap(arr, i, negativeIndex);
+					positiveIndex = negativeIndex;
+				}
+				positivePos = true;
+			}
+
+			// preparing the index markers for next index
+			if (positiveIndex <= i)
+			{
+				positiveIndex = i + 1;
+			}
+
+			if (negativeIndex <= i)
+			{
+				negativeIndex = i + 1;
+			}
+		}
+
+		return arr;
+	}
+
+	public int[] arrangeArr_1(int[] arr)
+	{
+		Queue<Integer> positiveQueue = new Queue<Integer>();
+		Queue<Integer> negativeQueue = new Queue<Integer>();
+
+		for (int i = 0; i < arr.length; i++)
+		{
+			if (arr[i] < 0)
+			{
+				negativeQueue.enQueue(arr[i]);
+			}
+			else
+			{
+				positiveQueue.enQueue(arr[i]);
+			}
+		}
+
+		boolean positivePos = true;
+		int count = 0;
+
+		while (!positiveQueue.isEmpty())
+		{
+			if (!positivePos && !negativeQueue.isEmpty())
+			{
+				positivePos = true;
+				arr[count++] = negativeQueue.deQueue();
+			}
+			else
+			{
+				positivePos = false;
+				arr[count++] = positiveQueue.deQueue();
+			}
+		}
+
+		while (!negativeQueue.isEmpty())
+		{
+			arr[count++] = negativeQueue.deQueue();
+		}
+
+		return arr;
+	}
+
+	public boolean isBinarySearchTree(TreeNode<Integer> node)
+	{
+		if (node == null)
+		{
+			return true;
+		}
+
+		if (node.rightChild != null && node.rightChild.value <= node.value)
+		{
+			return false;
+		}
+
+		if (node.leftChild != null && node.leftChild.value > node.value)
+		{
+			return false;
+		}
+
+		return isBinarySearchTree(node.leftChild) && isBinarySearchTree(node.rightChild);
+	}
+
+	private void swap(int[] arr, int index1, int index2)
+	{
+		int temp = arr[index1];
+		arr[index1] = arr[index2];
+		arr[index2] = temp;
+	}
+
+	public long findFactor(int num)
+	{
+		if (num == 0)
+		{
+			return 0;
+		}
+
+		int bit = 1;
+		int temp;
+		long binaryRep = bit;
+
+		while ((binaryRep * 9) % num != 0)
+		{
+			temp = ++bit;
+
+			String tempString = "";
+			while (temp != 0)
+			{
+				char ch = (temp % 2 == 0) ? '0' : '1';
+				tempString = ch + tempString;
+				temp = temp / 2;
+			}
+
+			binaryRep = Long.valueOf(tempString);
+		}
+
+		return binaryRep * 9;
+	}
+
+	public int search(int[] arr, int key)
+	{
+		if (arr == null || arr.length == 0)
+		{
+			return -1;
+		}
+
+		int lowMatch = 0;
+		int highMatch = 0;
+
+		int beg = 0;
+		int end = arr.length - 1;
+		int middle = 0;
+
+		while (beg < end)
+		{
+			middle = (beg + end) / 2;
+			if (key == arr[middle])
+			{
+				return key;
+			}
+
+			if (key > arr[middle])
+			{
+				beg = middle + 1;
+				lowMatch = arr[middle];
+			}
+			else
+			{
+				end = middle;
+				highMatch = arr[middle];
+			}
+		}
+
+		if (highMatch == 0)
+		{
+			return lowMatch;
+		}
+
+		int highOffSet = highMatch - key;
+
+		if (lowMatch == 0)
+		{
+			return highMatch;
+		}
+
+		int lowOffSet = key - lowMatch;
+
+		return (lowOffSet == Math.min(lowOffSet, highOffSet)) ? lowMatch : highMatch;
+	}
+
+	private Set<String> dictionary = null;
+
+	public void formatString()
+	{
+		dictionary = new HashSet<String>();
+		dictionary.add("a");
+		dictionary.add("an");
+		dictionary.add("ape");
+		dictionary.add("apple");
+
+		List<String> words = new ArrayList<String>();
+		String str = "anapple.";
+
+		System.out.println(formatString(words, 0, str.toCharArray(), 0));
+	}
+
+	private boolean formatString(List<String> words, int wordIndex, char[] charArr, int arrIndex)
+	{
+		if (arrIndex == charArr.length)
+		{
+			return true;
+		}
+
+		String str = "";
+
+		for (int i = arrIndex; i < charArr.length; i++)
+		{
+			str = str + charArr[i];
+			if (dictionary.contains(str))
+			{
+				words.add(str);
+				if (formatString(words, wordIndex + 1, charArr, i + 1))
+				{
+					return true;
+				}
+
+				words.remove(wordIndex);
+			}
+		}
+
+		return false;
+	}
+
+	public LinkedList<Integer> mergeList(LinkedList<Integer> list1, LinkedList<Integer> list2)
+	{
+		if (list1 == null && list2 == null)
+		{
+			return null;
+		}
+
+		if (list1 == null)
+		{
+			return list2;
+		}
+
+		if (list2 == null)
+		{
+			return list1;
+		}
+
+		LinkedList<Integer> prevNode = null;
+
+		if (list1.value < list2.value)
+		{
+			prevNode = list1;
+			list1 = list1.next;
+		}
+		else
+		{
+			prevNode = list2;
+			list2 = list2.next;
+		}
+
+		LinkedList<Integer> resultHead = prevNode;
+
+		while (true)
+		{
+			if (list1 == null)
+			{
+				prevNode.next = list2;
+				break;
+			}
+
+			if (list2 == null)
+			{
+				prevNode.next = list1;
+				break;
+			}
+
+			if (list1.value < list2.value)
+			{
+				prevNode.next = list1;
+				list1 = list1.next;
+			}
+			else
+			{
+				prevNode.next = list2;
+				list2 = list2.next;
+			}
+
+			prevNode = prevNode.next;
+		}
+
+		return resultHead;
+	}
+
+	public List<String> findPathsToLeaf(TreeNode<Integer> root)
+	{
+		if (root == null)
+		{
+			return new ArrayList<String>();
+		}
+
+		return findPathHelper(new ArrayList<Integer>(), 0, root, new ArrayList<String>());
+	}
+
+	private List<String> findPathHelper(List<Integer> arr, int index, TreeNode<Integer> node, List<String> strArray)
+	{
+		if (node == null)
+		{
+			return strArray;
+		}
+
+		if (index > (arr.size() - 1))
+		{
+			arr.add(index, node.value);
+		}
+		else
+		{
+			arr.set(index, node.value);
+		}
+
+		// if node is a leaf
+		if (node.rightChild == null && node.leftChild == null)
+		{
+			strArray.add(convertToString(arr, index));
+		}
+
+		findPathHelper(arr, index + 1, node.leftChild, strArray);
+		findPathHelper(arr, index + 1, node.rightChild, strArray);
+
+		return strArray;
+	}
+
+	private String convertToString(List<Integer> arr, int index)
+	{
+		StringBuilder builder = new StringBuilder();
+
+		builder.append(arr.get(0));
+		for (int i = 1; i <= index; i++)
+		{
+			builder.append("->");
+			builder.append(arr.get(i));
+		}
+
+		return builder.toString();
+	}
+
+	public static class LinkedList<T>
+	{
+		public T value;
+		public LinkedList<T> next;
+
+		public LinkedList(T value)
+		{
+			this.value = value;
+		}
 	}
 
 	public static class Node<T>
